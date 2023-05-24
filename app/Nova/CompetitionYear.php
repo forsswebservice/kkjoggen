@@ -49,7 +49,7 @@ class CompetitionYear extends Resource
             Boolean::make('Aktuell anmälningsår?', 'is_current'),
             DateTime::make('Anmälan öppnar', 'opens_at')->displayUsing(fn($v) => $v?->format('Y-m-d H:i')),
             DateTime::make('Anmälan stänger', 'closes_at')->displayUsing(fn($v) => $v?->format('Y-m-d H:i')),
-            DateTime::make('Sen anmälan från', 'late_at')->displayUsing(fn($v) => $v?->format('Y-m-d H:i')),
+            DateTime::make('Sen anmälan från', 'late_registration_at')->displayUsing(fn($v) => $v?->format('Y-m-d H:i')),
         ];
     }
 
