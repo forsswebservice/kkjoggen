@@ -47,7 +47,7 @@ class CompetitionClass extends Resource
     {
         return [
             Text::make('Namn', 'name'),
-            BelongsTo::make('Tävlingsår', 'competitionYear', CompetitionYear::class)->searchable(),
+            BelongsTo::make('Tävlingsår', 'competitionYear', CompetitionYear::class)->default(fn() => \App\Models\CompetitionYear::current()->first()?->id),
             Number::make('Pris', 'price'),
             Number::make('Pris vid flera', 'price_multiple'),
             Boolean::make('Gratis Katrineholms Kommun', 'is_free_when_local'),
