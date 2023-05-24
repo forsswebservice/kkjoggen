@@ -9,6 +9,10 @@ class RegistrationConfirmationController extends Controller
 {
     public function show(Competitor $competitor)
     {
+        if(!request()->hasValidSignature()) {
+            abort(401);
+        }
+
         if(!$competitor->settled_at) {
             return view('payment.not-payed', ['competitor' => $competitor]);
         }

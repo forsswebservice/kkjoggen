@@ -3,6 +3,7 @@
 namespace App\KKJoggen\SwedbankPay;
 
 use App\Models\Competitor;
+use Illuminate\Support\Facades\Log;
 
 class SwedbankPayCheckoutPaymentMethod extends SwedbankPayPaymentMethod
 {
@@ -37,24 +38,22 @@ class SwedbankPayCheckoutPaymentMethod extends SwedbankPayPaymentMethod
 
     public function paymentOrder(Competitor $competitor, $payerReference)
     {
-            $this->competitor = $competitor;
+        $this->competitor = $competitor;
 
-            $result = $this->client->post('/psp/paymentorders', $this->payload([
-                'payer' => [
-                    'firstname' => $competitor->firstname,
-                    'lastname' => $competitor->lastname,
-                    'email' => $competitor->email,
-                    'msisdn' => $this->formatPhoneNumber($competitor->phone),
-                    'payerReference' => $payerReference,
-                ],
-            ]));
+        $result = $this->client->post('/psp/paymentorders', $this->payload([
+            'payer' => [
+                'firstname' => $competitor->firstname,
+                'lastname' => $competitor->lastname,
+                'email' => $competitor->email,
+                'msisdn' => $this->formatPhoneNumber($competitor->phone),
+                'payerReference' => $payerReference,
+            ],
+        ]));
 
-            $competitor->setPaymentData('paymentorder', json_decode($result->getResponseBody()));
-            $competitor->save();
+        $competitor->setPaymentData('paymentorder', json_decode($result->getResponseBody()));
+        $competitor->save();
 
-            return $this->getOperationByRel(json_decode($result->getResponseBody(), true), 'view-paymentorder');
-
-        return null;
+        return $this->getOperationByRel(json_decode($result->getResponseBody(), true), 'redirect-checkout');
     }
 
     public function formatPhoneNumber($number) {
@@ -76,16 +75,24 @@ class SwedbankPayCheckoutPaymentMethod extends SwedbankPayPaymentMethod
         }
 
         try {
-            $result = $this->client->get("{$competitor->getPaymentData('paymentorder')['paymentOrder']['currentPayment']['id']}");
+            $result = $this->client->get("{$competitor->getPaymentData('paymentorder')['paymentOrder']['id']}");
             $result = json_decode($result->getResponseBody(), true);
 
             $competitor->setPaymentData('current-payment', $result);
             $competitor->save();
 
-            if ($result['payment']['instrument'] == 'Swish') {
+            $paid_result = $this->client->get("{$competitor->getPaymentData('paymentorder')['paymentOrder']['paid']['id']}");
+            $paid_result = json_decode($paid_result->getResponseBody(), true);
+
+            $competitor->setPaymentData('current-payment-paid', $result);
+            $competitor->save();
+
+            if (in_array($paid_result['paid']['instrument'], ['Swish', 'Trustly'])) {
                 return true;
             }
         } catch (\Throwable $e) {
+            Log::error("Payment complete failed for competitor #{$competitor->id}: {$e->getMessage()}");
+
             return false;
         }
 
@@ -101,7 +108,7 @@ class SwedbankPayCheckoutPaymentMethod extends SwedbankPayPaymentMethod
             $competitor->setPaymentData('pre-capture', $result);
             $competitor->save();
 
-            $result = $this->client->post($this->stripBaseUrl($this->getOperationByRel($result, 'create-paymentorder-capture')), $this->capturePayload($competitor));
+            $result = $this->client->post($this->stripBaseUrl($this->getOperationByRel($result, 'capture')), $this->capturePayload($competitor));
             $result = json_decode($result->getResponseBody(), true);
 
             $competitor->setPaymentData('capture', $result);

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\CompetitionYear;
 use App\Models\Competitor;
+use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Facades\Validator;
 
 class RegistrationController extends Controller
@@ -116,9 +117,9 @@ class RegistrationController extends Controller
         if($payer->price == 0) {
             $payer->sendConfirmations();
 
-            return redirect('/tack');
+            return redirect($payer->getConfirmationURL());
         }
 
-        return redirect("/betala/{$payer->id}");
+        return redirect($payer->getPaymentURL());
     }
 }

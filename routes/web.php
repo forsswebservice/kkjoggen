@@ -17,7 +17,9 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', [\App\Http\Controllers\RegistrationController::class, 'create']);
 Route::post('/', [\App\Http\Controllers\RegistrationController::class, 'store']);
 
-Route::get('/betala/{competitor}', [\App\Http\Controllers\PaymentController::class, 'create']);
+Route::get('/betala/{competitor}', [\App\Http\Controllers\PaymentController::class, 'create'])->name('payment');
+Route::get('/bekraftelse/{competitor}', [\App\Http\Controllers\RegistrationConfirmationController::class, 'show'])->name('confirmation');
+Route::get('/avbryt/{competitor}', [\App\Http\Controllers\CancelController::class, 'create'])->name('cancel');
 
 Route::get('betala/swedbank/{competitor}', [\App\Http\Controllers\SwedbankPaymentMethodController::class, 'index'])->name('swedbank.index');
 Route::get('betala/swedbank/{competitor}/complete', [\App\Http\Controllers\SwedbankPaymentMethodController::class, 'complete'])->name('swedbank.complete');
@@ -33,5 +35,7 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
+
+Route::get('/test', fn() => new \App\Mail\RegistrationConfirmation(\App\Models\Competitor::latest()->first()));
 
 require __DIR__.'/auth.php';

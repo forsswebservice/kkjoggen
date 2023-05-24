@@ -28,8 +28,12 @@ class SwedbankPaymentMethodController extends Controller
 
     public function index(Competitor $competitor)
     {
+        if(!request()->hasValidSignature()) {
+            abort(401);
+        }
+
         if($competitor->settled_at) {
-            return redirect("/betala/{$competitor->id}");
+            return redirect($competitor->getConfirmationURL());
         }
 
         return redirect($this->paymentUrl($competitor, $competitor->newPayeeReference()));
@@ -42,34 +46,44 @@ class SwedbankPaymentMethodController extends Controller
 
     public function complete(Competitor $competitor)
     {
+        if(!request()->hasValidSignature()) {
+            abort(401);
+        }
+
         try {
             if ((new SwedbankPayCheckoutPaymentMethod())->complete($competitor)) {
+                $competitor->sendConfirmations();
+
                 $competitor->update(['settled_at' => now()]);
             } else {
                 $competitor->update(['canceled_at' => now()]);
 
-                throw new \Exception("An error occured when completing your purchase #{$competitor->id}.");
+                throw new \Exception("Ett fel uppstod vid slutförandet av din betalning #{$competitor->id}.");
             }
         } catch (\Throwable $e) {
             flash()->error($e->getMessage());
 
-            return redirect("/betala/{$competitor->id}");
+            return redirect($competitor->getPaymentURL());
         }
 
-        return redirect("/bekraftelse/{$competitor->id}");
+        return redirect($competitor->getConfirmationURL());
     }
 
     public function cancel(Competitor $competitor)
     {
+        if(!request()->hasValidSignature()) {
+            abort(401);
+        }
+
         try {
             $competitor->update(['canceled_at' => now()]);
 
-            flash()->info(transEdit('Ditt köp har avbrutits.'));
+            flash()->info('Ditt köp har avbrutits.');
         } catch (\Throwable $e) {
             flash()->error($e->getMessage());
         }
 
-        return redirect("/betala/{$competitor->id}");
+        return redirect($competitor->getPaymentURL());
     }
 
     public function callback(Competitor $competitor)

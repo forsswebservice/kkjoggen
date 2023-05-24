@@ -3,6 +3,8 @@
         @csrf
         <div class="text-gray-900">
             <h1 class="text-3xl mb-5">Bekräftelse registrering {{ $competitor->competitionYear->name }}</h1>
+            <p>Din bokning är nu betalt och du är anmäld till {{ $competitor->competitionYear->name }}.</p>
+            <p class="mb-5">Ett bekräftelsemail har skickats till {{ $competitor->email }}.</p>
             @include('partials.payer', ['competitor' => $competitor])
             @include('partials.children', ['competitor' => $competitor])
         </div>

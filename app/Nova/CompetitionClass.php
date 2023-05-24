@@ -2,6 +2,7 @@
 
 namespace App\Nova;
 
+use App\Nova\Filters\CompetitionYearFilter;
 use Illuminate\Http\Request;
 use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\Boolean;
@@ -73,7 +74,9 @@ class CompetitionClass extends Resource
      */
     public function filters(NovaRequest $request)
     {
-        return [];
+        return [
+            new CompetitionYearFilter(),
+        ];
     }
 
     /**

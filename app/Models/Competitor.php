@@ -2,9 +2,12 @@
 
 namespace App\Models;
 
+use App\Mail\RegistrationConfirmation;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\URL;
 use Ramsey\Uuid\Uuid;
 
 class Competitor extends Model
@@ -105,5 +108,47 @@ class Competitor extends Model
         }
 
         return false;
+    }
+
+    public function getConfirmationURL()
+    {
+        return URL::signedRoute('confirmation', ['competitor' => $this->id]);
+    }
+
+    public function getPaymentURL()
+    {
+        return URL::signedRoute('payment', ['competitor' => $this->id]);
+    }
+
+    public function getCancelURL()
+    {
+        return URL::signedRoute('cancel', ['competitor' => $this->id]);
+    }
+
+    public function getStartPaymentURL()
+    {
+        return URL::signedRoute('swedbank.index', ['competitor' => $this->id]);
+    }
+
+    public function sendConfirmations()
+    {
+        Mail::to($this)->queue(new RegistrationConfirmation($this));
+    }
+
+    public function getStatus()
+    {
+        if($this->parent) {
+            return null;
+        }
+
+        if($this->canceled_at) {
+            return 'Avbruten';
+        }
+
+        if($this->settled_at) {
+            return 'Betald';
+        }
+
+        return 'Ej betald';
     }
 }

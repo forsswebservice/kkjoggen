@@ -2,6 +2,7 @@
 
 namespace App\Nova;
 
+use App\Nova\Filters\CompetitionYearFilter;
 use Illuminate\Http\Request;
 use Laravel\Nova\Fields\Boolean;
 use Laravel\Nova\Fields\DateTime;
@@ -46,9 +47,9 @@ class CompetitionYear extends Resource
         return [
             Text::make('Namn', 'name')->sortable(),
             Boolean::make('Aktuell anmälningsår?', 'is_current'),
-            DateTime::make('Anmälan öppnar', 'opens_at'),
-            DateTime::make('Anmälan stänger', 'closes_at'),
-            DateTime::make('Sen anmälan från', 'late_at'),
+            DateTime::make('Anmälan öppnar', 'opens_at')->displayUsing(fn($v) => $v?->format('Y-m-d H:i')),
+            DateTime::make('Anmälan stänger', 'closes_at')->displayUsing(fn($v) => $v?->format('Y-m-d H:i')),
+            DateTime::make('Sen anmälan från', 'late_at')->displayUsing(fn($v) => $v?->format('Y-m-d H:i')),
         ];
     }
 

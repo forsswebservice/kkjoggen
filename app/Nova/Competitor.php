@@ -2,7 +2,10 @@
 
 namespace App\Nova;
 
+use App\Nova\Filters\CompetitionYearFilter;
+use App\Nova\Filters\StatusFilter;
 use Illuminate\Http\Request;
+use Kkjoggen\Rowstyle\Rowstyle;
 use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\Boolean;
 use Laravel\Nova\Fields\Date;
@@ -24,18 +27,12 @@ class Competitor extends Resource
     public static $model = \App\Models\Competitor::class;
 
     /**
-     * The single value that should be used to represent the resource when being displayed.
-     *
-     * @var string
-     */
-    public static $title = 'firstname';
-
-    /**
      * The columns that should be searched.
      *
      * @var array
      */
     public static $search = [
+        'id',
         'firstname',
         'lastname',
         'email',
@@ -55,6 +52,11 @@ class Competitor extends Resource
         return $query;
     }
 
+    public function title()
+    {
+        return "{$this->firstname} {$this->lastname}";
+    }
+
     /**
      * Get the fields displayed by the resource.
      *
@@ -63,8 +65,10 @@ class Competitor extends Resource
      */
     public function fields(NovaRequest $request)
     {
-        return [
-            ID::make("Löpnummer", 'id')->sortable(),
+        $fields = [
+            Rowstyle::make('Status', fn() => $this->getStatus()),
+            BelongsTo::make('Betalare', 'parent', Competitor::class)->hideFromIndex()->display(fn($c) => "#{$c->id} {$c->firstname} {$c->lastname}"),
+            ID::make("Referensnummer", 'id')->sortable(),
             Text::make('Förnamn', 'firstname')->nullable()->sortable(),
             Text::make('Efternamn', 'lastname')->nullable()->sortable(),
             Number::make('Födelseår', 'born')->nullable(),
@@ -76,17 +80,22 @@ class Competitor extends Resource
             Text::make('Referensnummer', 'reference_number')->nullable()->hideFromIndex(),
             Text::make('Företag/Lag', 'team')->nullable()->hideFromIndex(),
             BelongsTo::make('Löparklass', 'competitionClass', CompetitionClass::class)->nullable(),
-            BelongsTo::make('Tävlingsår', 'competitionYear', CompetitionYear::class)->nullable(),
+            BelongsTo::make('Tävlingsår', 'competitionYear', CompetitionYear::class)->nullable()->hideFromIndex(),
             Text::make('Tröjstorlek', 'shirt_size')->nullable()->hideFromIndex(),
             Text::make('Namntryck', 'shirt_name')->nullable()->hideFromIndex(),
-            Number::make('Tidigare starter', 'previous_starts')->nullable()->hideFromIndex(),
+            //Number::make('Tidigare starter', 'previous_starts')->nullable()->hideFromIndex(),
             Number::make('Tid 10km', 'time_10k')->nullable()->hideFromIndex(),
-            DateTime::make('Anmäld', 'created_at')->hideWhenCreating()->hideWhenUpdating()->readonly(),
-            DateTime::make('Betald', 'settled_at')->nullable(),
-            Boolean::make('Bosatt i Katrineholms Kommun', 'is_local'),
+            DateTime::make('Anmäld', 'created_at')->hideWhenCreating()->hideWhenUpdating()->readonly()->displayUsing(fn($value) => $value->format('Y-m-d H:i')),
+            Boolean::make('Bosatt i Katrineholms Kommun', 'is_local')->hideFromIndex(),
             Number::make('Pris', 'price')->readonly(),
-            HasMany::make('Löpare', 'children', Competitor::class),
+            DateTime::make('Betalt', 'settled_at')->displayUsing(fn($v) => $v?->format("Y-m-d H:i"))->hideWhenUpdating(fn($c) => (bool)$c->parent)->readonly(fn($c) => (bool)$c->payment_data),
         ];
+
+        if(!$this->parent) {
+            $fields[] = HasMany::make('Löpare', 'children', Competitor::class);
+        }
+
+        return $fields;
     }
 
     /**
@@ -108,7 +117,10 @@ class Competitor extends Resource
      */
     public function filters(NovaRequest $request)
     {
-        return [];
+        return [
+            new CompetitionYearFilter(),
+            new StatusFilter(),
+        ];
     }
 
     /**

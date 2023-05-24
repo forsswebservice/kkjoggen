@@ -2,7 +2,9 @@
     "private": true,
     "scripts": {
         "dev": "vite",
-        "build": "vite build"
+        "build": "vite build",
+        "build-rowstyle": "cd nova-components/Rowstyle && npm run dev",
+        "build-rowstyle-prod": "cd nova-components/Rowstyle && npm run prod"
     },
     "devDependencies": {
         "@tailwindcss/forms": "^0.5.2",
