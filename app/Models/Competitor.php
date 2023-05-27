@@ -132,6 +132,10 @@ class Competitor extends Model
 
     public function sendConfirmations()
     {
+        if(!$this->email) {
+            return;
+        }
+
         Mail::to($this)->queue(new RegistrationConfirmation($this));
     }
 
