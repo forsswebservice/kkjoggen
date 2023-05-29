@@ -116,6 +116,7 @@ class RegistrationController extends Controller
 
         if($payer->price == 0) {
             $payer->update(['settled_at' => now()]);
+            $payer->children->each(fn($c) => $c->update(['settled_at' => now()]));
             $payer->sendConfirmations();
 
             return redirect($payer->getConfirmationURL());

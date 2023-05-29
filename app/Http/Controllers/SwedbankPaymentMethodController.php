@@ -55,8 +55,10 @@ class SwedbankPaymentMethodController extends Controller
                 $competitor->sendConfirmations();
 
                 $competitor->update(['settled_at' => now()]);
+                $competitor->children->each(fn($c) => $c->update(['settled_at' => now()]));
             } else {
                 $competitor->update(['canceled_at' => now()]);
+                $competitor->children->each(fn($c) => $c->update(['canceled_at' => now()]));
 
                 throw new \Exception("Ett fel uppstod vid slutförandet av din betalning #{$competitor->id}.");
             }
