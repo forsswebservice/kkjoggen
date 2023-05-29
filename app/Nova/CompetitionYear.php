@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Laravel\Nova\Fields\Boolean;
 use Laravel\Nova\Fields\DateTime;
 use Laravel\Nova\Fields\ID;
+use Laravel\Nova\Fields\Number;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use Laravel\Nova\Resource;
@@ -50,6 +51,9 @@ class CompetitionYear extends Resource
             DateTime::make('Anmälan öppnar', 'opens_at')->displayUsing(fn($v) => $v?->format('Y-m-d H:i')),
             DateTime::make('Anmälan stänger', 'closes_at')->displayUsing(fn($v) => $v?->format('Y-m-d H:i')),
             DateTime::make('Sen anmälan från', 'late_registration_at')->displayUsing(fn($v) => $v?->format('Y-m-d H:i')),
+            Number::make('Max antal löpare vid anmälan', 'max_registration'),
+            Number::make('Grupprabatt från antal', 'rebate_from'),
+            Number::make('Grupprabatt %', 'rebate_percent'),
         ];
     }
 

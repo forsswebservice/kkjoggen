@@ -2,10 +2,20 @@
 @foreach($competitor->children as $child)
     <div class="flex justify-between">
         <div>{{ $child->firstname }} {{ $child->lastname }} - {{ $child->competitionClass->name }}</div>
-        <div class="font-bold">{{ number_format($child->price, 2, ',', ' ') }} kr</div>
+        @if($child->rebate)
+            <div class="font-bold"><span class="line-through text-gray-500">{{ number_format($child->price + $child->rebate, 2, ',', ' ') }} kr</span> {{ number_format($child->price, 2, ',', ' ') }}kr</div>
+        @else
+            <div class="font-bold">{{ number_format($child->price, 2, ',', ' ') }} kr</div>
+        @endif
     </div>
 @endforeach
 <div class="border-t mt-2 pt-2">
+    @if($competitor->rebate)
+        <div class="flex justify-between">
+            <div class="font-bold">Rabatt</div>
+            <div class="font-bold">{{ number_format($competitor->rebate, 2, ',', ' ') }} kr</div>
+        </div>
+    @endif
     <div class="flex justify-between">
         <div class="font-bold">Att betala</div>
         <div class="font-bold">{{ number_format($competitor->price, 2, ',', ' ') }} kr</div>

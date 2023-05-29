@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Mail\RegistrationConfirmation;
+use App\Traits\StoresSumsInCents;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -13,7 +14,7 @@ use Ramsey\Uuid\Uuid;
 
 class Competitor extends Model
 {
-    use HasFactory, SoftDeletes;
+    use HasFactory, SoftDeletes, StoresSumsInCents;
 
     protected $guarded = [];
 
@@ -22,6 +23,11 @@ class Competitor extends Model
         'settled_at' => 'datetime',
         'canceled_at' => 'datetime',
         'is_local' => 'boolean',
+    ];
+
+    protected $sums = [
+        'price',
+        'rebate',
     ];
 
     public function competitionClass()
@@ -51,9 +57,13 @@ class Competitor extends Model
         }
 
         $total_price = 0;
+        $total_rebate = 0;
         $children_grouped_by_class = $this->children->groupBy('competition_class_id');
+        $children_count = $this->children->count();
 
         foreach($this->children as $child) {
+            $rebate = 0;
+
             if($child->is_local && $child->competitionClass->is_free_when_local) {
                 $price = 0;
             } elseif(count($children_grouped_by_class[$child->competitionClass->id]) > 1) {
@@ -62,12 +72,28 @@ class Competitor extends Model
                 $price = $child->competitionClass->price;
             }
 
-            $child->update(['price' => $price]);
+            if($child->competitionYear->late_registration_at && $child->competitionYear->late_registration_at->lt(now())) {
+                $price += $child->competitionClass->price_late;
+            }
+
+            if($child->competitionYear->rebate_from > 0 && $children_count >= $child->competitionYear->rebate_from) {
+                $rebate = round($price * ($child->competitionYear->rebate_percent / 100), 2);
+                $total_rebate += $rebate;
+                $price -= $rebate;
+            }
+
+            $child->update([
+                'price' => $price,
+                'rebate' => $rebate,
+            ]);
 
             $total_price += $price;
         }
 
-        $this->update(['price' => $total_price]);
+        $this->update([
+            'price' => $total_price,
+            'rebate' => $total_rebate,
+        ]);
 
         return $total_price;
     }

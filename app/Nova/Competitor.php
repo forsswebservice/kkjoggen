@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Kkjoggen\Rowstyle\Rowstyle;
 use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\Boolean;
+use Laravel\Nova\Fields\Currency;
 use Laravel\Nova\Fields\Date;
 use Laravel\Nova\Fields\DateTime;
 use Laravel\Nova\Fields\Email;
@@ -87,7 +88,8 @@ class Competitor extends Resource
             Number::make('Tid 10km', 'time_10k')->nullable()->hideFromIndex(),
             DateTime::make('Anmäld', 'created_at')->hideWhenCreating()->hideWhenUpdating()->readonly()->displayUsing(fn($value) => $value->format('Y-m-d H:i')),
             Boolean::make('Bosatt i Katrineholms Kommun', 'is_local')->hideFromIndex(),
-            Number::make('Pris', 'price')->readonly(),
+            Currency::make('Pris', 'price')->readonly(),
+            Currency::make('Rabatt', 'rebate')->readonly(),
             DateTime::make('Betalt', 'settled_at')->displayUsing(fn($v) => $v?->format("Y-m-d H:i"))->hideWhenUpdating(fn($c) => (bool)$c->parent)->readonly(fn($c) => (bool)$c->payment_data),
         ];
 

@@ -50,6 +50,7 @@ class CompetitionClass extends Resource
             BelongsTo::make('Tävlingsår', 'competitionYear', CompetitionYear::class)->default(fn() => \App\Models\CompetitionYear::current()->first()?->id),
             Number::make('Pris', 'price'),
             Number::make('Pris vid flera', 'price_multiple'),
+            Number::make('Tillägg vid sen anmälan', 'price_late'),
             Boolean::make('Gratis Katrineholms Kommun', 'is_free_when_local'),
             HasMany::make('Löpare', 'competitors', CompetitionYear::class),
         ];
