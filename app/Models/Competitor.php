@@ -6,6 +6,7 @@ use App\Mail\RegistrationConfirmation;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\URL;
 use Ramsey\Uuid\Uuid;
@@ -136,7 +137,11 @@ class Competitor extends Model
             return;
         }
 
-        Mail::to($this)->queue(new RegistrationConfirmation($this));
+        try {
+            Mail::to($this)->queue(new RegistrationConfirmation($this));
+        } catch(\Throwable $e) {
+            Log::error($e);
+        }
     }
 
     public function getStatus()
