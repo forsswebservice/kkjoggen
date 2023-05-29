@@ -115,6 +115,7 @@ class RegistrationController extends Controller
         $payer->calculatePrices();
 
         if($payer->price == 0) {
+            $payer->update(['settled_at' => now()]);
             $payer->sendConfirmations();
 
             return redirect($payer->getConfirmationURL());
