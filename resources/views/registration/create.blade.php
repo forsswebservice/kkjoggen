@@ -228,7 +228,7 @@
 
         <script>
             function changeRunners(e) {
-                for(var i = 1; i < 10; i++) {
+                for(var i = 1; i <= {{ $year->max_registration }}; i++) {
                     if(i <= e.target.value)
                         document.getElementById(`competitor${i}`).classList.remove('hidden');
                     else
