@@ -6,6 +6,7 @@ use App\Nova\Filters\CompetitionYearFilter;
 use Illuminate\Http\Request;
 use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\Boolean;
+use Laravel\Nova\Fields\Currency;
 use Laravel\Nova\Fields\HasMany;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Number;
@@ -48,9 +49,9 @@ class CompetitionClass extends Resource
         return [
             Text::make('Namn', 'name'),
             BelongsTo::make('Tävlingsår', 'competitionYear', CompetitionYear::class)->default(fn() => \App\Models\CompetitionYear::current()->first()?->id),
-            Number::make('Pris', 'price'),
-            Number::make('Pris vid flera', 'price_multiple'),
-            Number::make('Tillägg vid sen anmälan', 'price_late'),
+            Currency::make('Pris', 'price'),
+            Currency::make('Pris vid flera', 'price_multiple'),
+            Currency::make('Tillägg vid sen anmälan', 'price_late'),
             Boolean::make('Gratis Katrineholms Kommun', 'is_free_when_local'),
             HasMany::make('Löpare', 'competitors', CompetitionYear::class),
         ];
