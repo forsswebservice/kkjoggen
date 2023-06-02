@@ -17,7 +17,7 @@
                 <div class="sm:col-span-3">
                     <label for="firstname" class="block text-sm font-medium leading-6 text-gray-900">Förnamn<span class="text-red-500">*</span></label>
                     <div class="mt-2">
-                        <input type="text" name="firstname" id="firstname" autocomplete="given-name" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-green-600 sm:text-sm sm:leading-6">
+                        <input type="text" name="firstname" id="firstname" value="{{ old('firstname') }}" autocomplete="given-name" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-green-600 sm:text-sm sm:leading-6">
                         @error('firstname')
                             <p class="text-sm text-red-500">{{ $message }}</p>
                         @enderror
@@ -27,7 +27,7 @@
                 <div class="sm:col-span-3">
                     <label for="lastname" class="block text-sm font-medium leading-6 text-gray-900">Efternamn<span class="text-red-500">*</span></label>
                     <div class="mt-2">
-                        <input type="text" name="lastname" id="lastname" autocomplete="family-name" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-green-600 sm:text-sm sm:leading-6">
+                        <input type="text" name="lastname" id="lastname" value="{{ old('lastname') }}" autocomplete="family-name" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-green-600 sm:text-sm sm:leading-6">
                         @error('lastname')
                             <p class="text-sm text-red-500">{{ $message }}</p>
                         @enderror
@@ -37,7 +37,7 @@
                 <div class="sm:col-span-6">
                     <label for="addres" class="block text-sm font-medium leading-6 text-gray-900">Gatuadress<span class="text-red-500">*</span></label>
                     <div class="mt-2">
-                        <input type="text" name="address" id="address" autocomplete="address" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-green-600 sm:text-sm sm:leading-6">
+                        <input type="text" name="address" id="address" value="{{ old('address') }}" autocomplete="address" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-green-600 sm:text-sm sm:leading-6">
                         @error('address')
                             <p class="text-sm text-red-500">{{ $message }}</p>
                         @enderror
@@ -47,7 +47,7 @@
                 <div class="sm:col-span-1">
                     <label for="zip_code" class="block text-sm font-medium leading-6 text-gray-900">Postnummer<span class="text-red-500">*</span></label>
                     <div class="mt-2">
-                        <input type="text" name="zip_code" id="zip_code" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-green-600 sm:text-sm sm:leading-6">
+                        <input type="text" name="zip_code" id="zip_code" value="{{ old('zip_code') }}" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-green-600 sm:text-sm sm:leading-6">
                         @error('zip_code')
                             <p class="text-sm text-red-500">{{ $message }}</p>
                         @enderror
@@ -57,7 +57,7 @@
                 <div class="sm:col-span-5">
                     <label for="city" class="block text-sm font-medium leading-6 text-gray-900">Ort<span class="text-red-500">*</span></label>
                     <div class="mt-2">
-                        <input type="text" name="city" id="city" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-green-600 sm:text-sm sm:leading-6">
+                        <input type="text" name="city" id="city" value="{{ old('city') }}" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-green-600 sm:text-sm sm:leading-6">
                         @error('city')
                             <p class="text-sm text-red-500">{{ $message }}</p>
                         @enderror
@@ -67,7 +67,7 @@
                 <div class="sm:col-span-3">
                     <label for="phone" class="block text-sm font-medium leading-6 text-gray-900">Telefonnummer<span class="text-red-500">*</span></label>
                     <div class="mt-2">
-                        <input id="phone" name="phone" type="text" autocomplete="phone" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-green-600 sm:text-sm sm:leading-6">
+                        <input id="phone" name="phone" type="text" value="{{ old('phone') }}" autocomplete="phone" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-green-600 sm:text-sm sm:leading-6">
                         @error('phone')
                             <p class="text-sm text-red-500">{{ $message }}</p>
                         @enderror
@@ -77,7 +77,7 @@
                 <div class="sm:col-span-3">
                     <label for="email" class="block text-sm font-medium leading-6 text-gray-900">E-postadress</label>
                     <div class="mt-2">
-                        <input id="email" name="email" type="email" autocomplete="email" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-green-600 sm:text-sm sm:leading-6">
+                        <input id="email" name="email" type="email" value="{{ old('email') }}" autocomplete="email" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-green-600 sm:text-sm sm:leading-6">
                         @error('email')
                             <p class="text-sm text-red-500">{{ $message }}</p>
                         @enderror
@@ -101,7 +101,7 @@
                     <div class="sm:col-span-3">
                         <label for="firstname{{ $i }}" class="block text-sm font-medium leading-6 text-gray-900">Förnamn<span class="text-red-500">*</span></label>
                         <div class="mt-2">
-                            <input type="text" name="firstname{{ $i }}" id="firstname{{ $i }}" autocomplete="given-name" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-green-600 sm:text-sm sm:leading-6">
+                            <input type="text" name="firstname{{ $i }}" id="firstname{{ $i }}" value="{{ old("firstname{$i}") }}" autocomplete="given-name" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-green-600 sm:text-sm sm:leading-6">
                             @error("firstname{$i}")
                                 <p class="text-sm text-red-500">{{ $message }}</p>
                             @enderror
@@ -111,7 +111,7 @@
                     <div class="sm:col-span-3">
                         <label for="lastname" class="block text-sm font-medium leading-6 text-gray-900">Efternamn<span class="text-red-500">*</span></label>
                         <div class="mt-2">
-                            <input type="text" name="lastname{{ $i }}" id="lastname{{ $i }}" autocomplete="family-name" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-green-600 sm:text-sm sm:leading-6">
+                            <input type="text" name="lastname{{ $i }}" id="lastname{{ $i }}" value="{{ old("lastname{$i}") }}" autocomplete="family-name" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-green-600 sm:text-sm sm:leading-6">
                             @error("lastname{$i}")
                                 <p class="text-sm text-red-500">{{ $message }}</p>
                             @enderror
@@ -121,7 +121,7 @@
                     <div class="sm:col-span-6">
                         <label for="born{{ $i }}" class="block text-sm font-medium leading-6 text-gray-900">Födelseår<span class="text-red-500">*</span></label>
                         <div class="mt-2">
-                            <input type="text" name="born{{ $i }}" id="born{{ $i }}" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-green-600 sm:text-sm sm:leading-6">
+                            <input type="text" name="born{{ $i }}" id="born{{ $i }}" value="{{ old("born{$i}") }}" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-green-600 sm:text-sm sm:leading-6">
                             @error("born{$i}")
                                 <p class="text-sm text-red-500">{{ $message }}</p>
                             @enderror
@@ -131,7 +131,7 @@
                     <div class="sm:col-span-6">
                         <label for="team{{ $i }}" class="block text-sm font-medium leading-6 text-gray-900">Företag/förening/hemort<span class="text-red-500">*</span></label>
                         <div class="mt-2">
-                            <input type="text" name="team{{ $i }}" id="team{{ $i }}" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-green-600 sm:text-sm sm:leading-6">
+                            <input type="text" name="team{{ $i }}" id="team{{ $i }}" value="{{ old("team{$i}") }}" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-green-600 sm:text-sm sm:leading-6">
                             @error("team{$i}")
                                 <p class="text-sm text-red-500">{{ $message }}</p>
                             @enderror
@@ -152,7 +152,7 @@
                     <div class="sm:col-span-6">
                         <label for="competition_class_id{{ $i }}" class="block text-sm font-medium leading-6 text-gray-900">Tröjstorlek</label>
                         <div class="mt-2">
-                            <select name="shirt_size{{ $i }}" id="shirt_size{{ $i }}" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-green-600 sm:text-sm sm:leading-6">
+                            <select name="shirt_size{{ $i }}" id="shirt_size{{ $i }}" value="{{ old("shirt_size{$i}") }}" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-green-600 sm:text-sm sm:leading-6">
                                 @foreach(config('competition.shirt_sizes') as $shirt_size)
                                     <option value="{{ $shirt_size }}" {{ $shirt_size == old("shirt_size{$i}") ? 'selected' : ''}}>{{ $shirt_size }}</option>
                                 @endforeach
@@ -163,7 +163,7 @@
                     <div class="sm:col-span-6">
                         <label for="shirt_name{{ $i }}" class="block text-sm font-medium leading-6 text-gray-900">Namntryck</label>
                         <div class="mt-2">
-                            <input type="text" name="shirt_name{{ $i }}" id="shirt_name{{ $i }}" maxlength="10" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-green-600 sm:text-sm sm:leading-6">
+                            <input type="text" name="shirt_name{{ $i }}" id="shirt_name{{ $i }}" value="{{ old("shirt_name{$i}") }}" maxlength="10" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-green-600 sm:text-sm sm:leading-6">
                             <p class="text-sm mt-1 text-gray-500">Max 10 tecken. 50kr betalas på plats vid uthämtning av tröjan och inte vid anmälan till tävlingen.</p>
                         </div>
                     </div>
@@ -178,7 +178,7 @@
                     <div class="sm:col-span-6">
                         <label for="time_10k{{ $i }}" class="block text-sm font-medium leading-6 text-gray-900">Miltid för seeding</label>
                         <div class="mt-2">
-                            <input type="text" name="time_10k{{ $i }}" id="time_10k{{ $i }}" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-green-600 sm:text-sm sm:leading-6">
+                            <input type="text" name="time_10k{{ $i }}" id="time_10k{{ $i }}" value="{{ old("time_10k{$i}") }}" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-green-600 sm:text-sm sm:leading-6">
                             <p class="text-sm mt-1 text-gray-500">Avser endast kvartsmarathon.</p>
                         </div>
                     </div>
@@ -188,7 +188,7 @@
                             <div class="mt-6 space-y-6">
                                 <div class="relative flex gap-x-3">
                                     <div class="flex h-6 items-center">
-                                        <input id="is_local{{ $i }}" name="is_local{{ $i }}" type="checkbox" value="1" {{ $year->competitionClasses->first()->is_free_when_local ? '' : 'disabled' }} class="h-4 w-4 rounded border-gray-300 text-green-600 focus:ring-green-600">
+                                        <input id="is_local{{ $i }}" name="is_local{{ $i }}" type="checkbox" value="1" {{ old("is_local{$i}") ? 'checked' : '' }} {{ $year->competitionClasses->first()->is_free_when_local ? '' : 'disabled' }} class="h-4 w-4 rounded border-gray-300 text-green-600 focus:ring-green-600">
                                     </div>
                                     <div class="text-sm leading-6">
                                         <label for="is_local{{ $i }}" class="font-medium text-gray-900">Bosatt i Katrineholms kommun</label>
