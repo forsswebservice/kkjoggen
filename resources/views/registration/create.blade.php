@@ -1,5 +1,8 @@
 <x-guest-layout>
     <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+        @if($errors->any())
+            <div class="alert alert-danger  ">Du har ett eller flera fält som du missat att fylla i eller som innehåller fel. Vänligen kontrollera din anmälan.</div>
+        @endif
         <form method="post" action="/">
             @csrf
             <div class="text-gray-900">
