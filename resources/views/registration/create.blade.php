@@ -192,7 +192,7 @@
                                     </div>
                                     <div class="text-sm leading-6">
                                         <label for="is_local{{ $i }}" class="font-medium text-gray-900">Bosatt i Katrineholms kommun</label>
-                                        <p class="text-gray-500">Löpare i löpklass {{ $free_when_local_classes->map(fn($c) => $c->name)->join(', ', ' och ') }} får sin avgift betald av Katrineholms Kommun.</p>
+                                        <p class="text-gray-500">Löpare <span class="underline">bosatta i Katrineholms Kommun</span> i löpklass {{ $free_when_local_classes->map(fn($c) => $c->name)->join(', ', ' och ') }} får sin avgift betald av Katrineholms Kommun.</p>
                                     </div>
                                 </div>
                             </div>
@@ -208,11 +208,14 @@
                             <input id="accepts" name="accepts" type="checkbox" class="h-4 w-4 rounded border-gray-300 text-green-600 focus:ring-green-600">
                         </div>
                         <div class="text-sm leading-6">
-                            <label for="accepts{{ $i }}" class="font-medium text-gray-900">Jag godkänner vilkoren för anmälan<span class="text-red-500">*</span></label>
-                            <p class="text-gray-500">
-                                Allt deltagande i KK-Joggen sker på egen risk. Vårdnadshavare ansvarar för barn.<br>
-                                Deltagarna godkänner att loppet filmas/fotograferas samt att startlistor och resultatlistor publiceras.
-                            </p>
+                            <label for="accepts{{ $i }}" class="font-medium text-gray-900">Jag godkänner villkoren för anmälan<span class="text-red-500">*</span></label>
+                            <p class="text-gray-500">Genom att acceptera villkoren vid anmälan och betalning till {{ $year->name }} förbinder du dig att acceptera följande:</p>
+                            <ul class="text-gray-500 my-2 list-disc pl-4">
+                                <li>Att {{ $year->name }} får använda dina uppgifter i vårt adressregister.</li>
+                                <li>Att ditt namn kommer finnas med i anmälnings- och resultatregistret och kan publiceras på Internet.</li>
+                                <li>Att {{ $year->name }} kan publicera bild och video från loppet där du kan komma att vara med.</li>
+                            </ul>
+                            <p class="text-gray-500 mt-2">För att få tillbaka startavgiften kan du teckna en avbeställningsförsäkring på <a href="http://www.startklar.nu" target="_blank" class="text-green-500 underline">http://www.startklar.nu</a>. Den innehåller även en olycksfallsförsäkring.</p>
                             @error("accepts")
                                 <p class="text-sm text-red-500">{{ $message }}</p>
                             @enderror
