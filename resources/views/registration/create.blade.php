@@ -214,11 +214,12 @@
                             <label for="accepts{{ $i }}" class="font-medium text-gray-900">Jag godkänner villkoren för anmälan<span class="text-red-500">*</span></label>
                             <p class="text-gray-500">Genom att acceptera villkoren vid anmälan och betalning till {{ $year->name }} förbinder du dig att acceptera följande:</p>
                             <ul class="text-gray-500 my-2 list-disc pl-4">
+                                <li>Att anmälan är bindande och att startavgift inte återbetalas.</li>
                                 <li>Att {{ $year->name }} får använda dina uppgifter i vårt adressregister.</li>
                                 <li>Att ditt namn kommer finnas med i anmälnings- och resultatregistret och kan publiceras på Internet.</li>
                                 <li>Att {{ $year->name }} kan publicera bild och video från loppet där du kan komma att vara med.</li>
                             </ul>
-                            <p class="text-gray-500 mt-2">För att få tillbaka startavgiften kan du teckna en avbeställningsförsäkring på <a href="http://www.startklar.nu" target="_blank" class="text-green-500 underline">http://www.startklar.nu</a>. Den innehåller även en olycksfallsförsäkring.</p>
+                            <p class="text-gray-500 mt-2">För att få tillbaka startavgiften vid eventuell skada eller sjukdom kan du teckna en avbeställningsförsäkring på <a href="http://www.startklar.nu" target="_blank" class="text-green-500 underline">http://www.startklar.nu</a>. Den innehåller även en olycksfallsförsäkring.</p>
                             @error("accepts")
                                 <p class="text-sm text-red-500">{{ $message }}</p>
                             @enderror

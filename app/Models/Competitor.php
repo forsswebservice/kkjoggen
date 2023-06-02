@@ -66,7 +66,7 @@ class Competitor extends Model
 
             if($child->is_local && $child->competitionClass->is_free_when_local) {
                 $price = 0;
-            } elseif($child->competitionClass->price_multiple > 0 && count($children_grouped_by_class[$child->competitionClass->id]) > 1) {
+            } elseif($child->competitionClass->price_multiple > 0 && count($children_grouped_by_class[$child->competitionClass->id]) > 1 && $child->id != $children_grouped_by_class[$child->competitionClass->id][0]->id) {
                 $price = $child->competitionClass->price_multiple;
             } else {
                 $price = $child->competitionClass->price;

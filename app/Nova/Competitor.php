@@ -58,6 +58,38 @@ class Competitor extends Resource
         return "{$this->firstname} {$this->lastname}";
     }
 
+    protected static function applySearch($query, $search) {
+        if($competition_year = \App\Models\CompetitionYear::current()->first()) {
+            return $query
+                ->where('competition_year_id', $competition_year->id)
+                ->whereNotNull('settled_at')
+                ->whereNull('canceled_at')
+                ->where(fn($q) =>
+                    $q->where('id', '=', $search)
+                        ->orWhere('firstname', 'LIKE', "%{$search}%")
+                        ->orWhere('lastname', 'LIKE', "%{$search}%")
+                        ->orWhereRaw("CONCAT(firstname, ' ', lastname) LIKE '%{$search}%'")
+                        ->orWhere('email', 'LIKE', "%{$search}%")
+                        ->orWhere('phone', 'LIKE', "%{$search}%")
+                        ->orWhereHas('parent', fn($q) =>
+                            $q->where('id', '=', $search)
+                                ->orWhere('firstname', 'LIKE', "%{$search}%")
+                                ->orWhere('lastname', 'LIKE', "%{$search}%")
+                                ->orWhere('email', 'LIKE', "%{$search}%")
+                                ->orWhere('phone', 'LIKE', "%{$search}%")
+                        )->orWhereHas('children', fn($q) =>
+                            $q->where('id', '=', $search)
+                                ->orWhere('firstname', 'LIKE', "%{$search}%")
+                                ->orWhere('lastname', 'LIKE', "%{$search}%")
+                                ->orWhere('email', 'LIKE', "%{$search}%")
+                                ->orWhere('phone', 'LIKE', "%{$search}%")
+                        )
+                    );
+            }
+
+        return $query;
+    }
+
     /**
      * Get the fields displayed by the resource.
      *
@@ -68,7 +100,7 @@ class Competitor extends Resource
     {
         $fields = [
             Rowstyle::make('Status', fn() => $this->getStatus()),
-            BelongsTo::make('Betalare', 'parent', Competitor::class)->hideFromIndex()->display(fn($c) => "#{$c->id} {$c->firstname} {$c->lastname}"),
+            BelongsTo::make('Betalare', 'parent', Competitor::class)->hideFromIndex()->display(fn($c) => "#{$c->id} {$c->firstname} {$c->lastname}")->searchable(),
             ID::make("Referensnummer", 'id')->sortable(),
             Text::make('Förnamn', 'firstname')->nullable()->sortable(),
             Text::make('Efternamn', 'lastname')->nullable()->sortable(),
@@ -81,7 +113,7 @@ class Competitor extends Resource
             Text::make('Referensnummer', 'reference_number')->nullable()->hideFromIndex(),
             Text::make('Företag/Lag', 'team')->nullable()->hideFromIndex(),
             BelongsTo::make('Löparklass', 'competitionClass', CompetitionClass::class)->nullable(),
-            BelongsTo::make('Tävlingsår', 'competitionYear', CompetitionYear::class)->nullable()->hideFromIndex(),
+            BelongsTo::make('Tävlingsår', 'competitionYear', CompetitionYear::class)->nullable()->hideFromIndex()->default(fn() => \App\Models\CompetitionYear::current()->first()?->id),
             Text::make('Tröjstorlek', 'shirt_size')->nullable()->hideFromIndex(),
             Text::make('Namntryck', 'shirt_name')->nullable()->hideFromIndex(),
             //Number::make('Tidigare starter', 'previous_starts')->nullable()->hideFromIndex(),
