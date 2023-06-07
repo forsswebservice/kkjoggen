@@ -44,7 +44,7 @@ class SwedbankPayPaymentMethod
         } catch (\Throwable $e) {
             info($operation);
             info(json_encode($result));
-            Log::error($e->getMessage());
+            Log::error("An error occurred during validation of response: {$e->getMessage()}");
             throw new \Exception("Invalid response for competitor #{$competitor->id}");
         }
     }

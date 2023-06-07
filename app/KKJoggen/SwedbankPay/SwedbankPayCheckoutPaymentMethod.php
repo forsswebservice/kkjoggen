@@ -116,7 +116,7 @@ class SwedbankPayCheckoutPaymentMethod extends SwedbankPayPaymentMethod
 
             return $result;
         } catch (\Throwable $e) {
-            Log::error($e->getMessage());
+            Log::error("An error occured during capture: {$e->getMessage()}");
             return false;
         }
     }
