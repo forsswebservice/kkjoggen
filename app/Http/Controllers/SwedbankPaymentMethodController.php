@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use App\KKJoggen\SwedbankPay\SwedbankPayCheckoutPaymentMethod;
 use App\Models\Competitor;
+use Illuminate\Support\Facades\Log;
 
 class SwedbankPaymentMethodController extends Controller
 {
@@ -97,6 +98,7 @@ class SwedbankPaymentMethodController extends Controller
         try {
             (new SwedbankPayCheckoutPaymentMethod())->callback($competitor);
         } catch (\Throwable $e) {
+            Log::error($e->getMessage());
         }
 
         return 'OK';
