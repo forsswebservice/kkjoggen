@@ -82,7 +82,7 @@ class SwedbankPaymentMethodController extends Controller
                 return 'FAILED';
             }
         } catch (\Throwable $e) {
-            Log::error($e->getMessage());
+            Log::error("An error occurred while processing callback: {$e->getMessage()}");
         }
 
         return 'OK';
