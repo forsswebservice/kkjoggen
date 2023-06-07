@@ -116,6 +116,7 @@ class SwedbankPayCheckoutPaymentMethod extends SwedbankPayPaymentMethod
 
             return $result;
         } catch (\Throwable $e) {
+            Log::error($e->getMessage());
             return false;
         }
     }
