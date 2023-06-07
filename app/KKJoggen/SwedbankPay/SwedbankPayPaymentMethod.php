@@ -33,7 +33,7 @@ class SwedbankPayPaymentMethod
 
     public function complete(Competitor $competitor)
     {
-        (new SwedbankPayCheckoutPaymentMethod())->complete($competitor);
+        return (new SwedbankPayCheckoutPaymentMethod())->complete($competitor);
     }
 
     protected function validResponse($operation, Competitor $competitor, $result)
@@ -61,22 +61,24 @@ class SwedbankPayPaymentMethod
 
     public function callback(Competitor $competitor)
     {
-        info(json_encode(request()->all()));
-        exit;
-        $competitor->setPaymentData('callback', request()->all());
+        $timestamp = now()->unix();
+
+        info("Recieved callback with reference #{$competitor->id}. Timestamp: {$timestamp}");
+
+        $competitor->setPaymentData("callback-{$timestamp}", request()->all());
         $competitor->save();
 
         $result = $this->client->get(request()->all()['payment']['id']);
         $result = json_decode($result->getResponseBody(), true);
 
-        $competitor->setPaymentData('callback-transaction', request()->all());
+        $competitor->setPaymentData("callback-{$timestamp}-payment", $result);
         $competitor->save();
 
-        if($capture_url = $this->getOperationByRel($result, 'capture', true)) {
-            dd($capture_url);
+        if(!$competitor->settled_at) {
+            return $this->complete($competitor);
         }
 
-        dd($result);
+        return true;
     }
 
     public function payload($additional_data = [])

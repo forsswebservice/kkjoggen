@@ -9,24 +9,6 @@ use Illuminate\Support\Facades\Log;
 
 class SwedbankPaymentMethodController extends Controller
 {
-
-    /*
-    public function index(Competitor $competitor)
-    {
-        if($competitor->settled_at) {
-            return redirect("/betala/{$competitor->id}");
-        }
-
-        $checkin = (new SwedbankPayCheckoutPaymentMethod())->checkin($competitor);
-
-        return view('customer.paymentmethod.swedbankpaymentmethod.index', [
-            'competitor' => $competitor,
-            'checkin' => $checkin,
-            'payment_url' => url()->route('swedbank.payment_url', ['competitor' => $competitor, 'payerReference' => '']),
-        ]);
-    }
-    */
-
     public function index(Competitor $competitor)
     {
         if(!request()->hasValidSignature()) {
@@ -96,9 +78,10 @@ class SwedbankPaymentMethodController extends Controller
         }
 
         try {
-            (new SwedbankPayCheckoutPaymentMethod())->callback($competitor);
+            if(!(new SwedbankPayCheckoutPaymentMethod())->callback($competitor)) {
+                return 'FAILED';
+            }
         } catch (\Throwable $e) {
-            dd($e->getMessage());
             Log::error($e->getMessage());
         }
 
