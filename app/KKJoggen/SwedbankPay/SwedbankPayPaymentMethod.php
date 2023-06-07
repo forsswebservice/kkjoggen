@@ -86,7 +86,7 @@ class SwedbankPayPaymentMethod
                     'completeUrl' => URL::signedRoute('swedbank.complete', $this->competitor),
                     'cancelUrl' => URL::signedRoute('swedbank.cancel', $this->competitor),
                     'callbackUrl' => URL::signedRoute('swedbank.callback', $this->competitor),
-                    'termsOfServiceUrl' => 'https://kk-joggen.se/terms',
+                    'termsOfServiceUrl' => url('/villkor'),
                 ],
                 'payeeInfo' => [
                     'payeeId' => config('services.swedbank.payee_id'),

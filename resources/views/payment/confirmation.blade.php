@@ -4,7 +4,9 @@
         <div class="text-gray-900">
             <h1 class="text-3xl mb-5">Kvitto registrering {{ $competitor->competitionYear->name }}</h1>
             <p>Din bokning är nu betalt och du är anmäld till {{ $competitor->competitionYear->name }}.</p>
-            <p class="mb-5">Ett bekräftelsemail har skickats till {{ $competitor->email }}.</p>
+            @if($competitor->email)
+                <p class="mb-5">Ett bekräftelsemail har skickats till {{ $competitor->email }}.</p>
+            @endif
             <div class="mb-5">
                 <p>Din anmälan har referensnummer: <b>{{ $competitor->id }}</b></p>
                 @if($reference_number = rescue(fn() => array_slice(explode('/', $competitor->getPaymentData('current-payment-paid')['paymentOrder']['id']), -1)[0], null, false))

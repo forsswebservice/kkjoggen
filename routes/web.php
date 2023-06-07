@@ -36,6 +36,6 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-Route::get('/test', fn() => new \App\Mail\RegistrationConfirmation(\App\Models\Competitor::latest()->first()));
+Route::view('/villkor', 'terms');
 
 require __DIR__.'/auth.php';
