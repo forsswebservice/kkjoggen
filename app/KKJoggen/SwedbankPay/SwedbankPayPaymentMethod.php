@@ -4,6 +4,7 @@ namespace App\KKJoggen\SwedbankPay;
 
 use App\Models\Competitor;
 use App\PurchaseItem;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\URL;
 use SwedbankPay\Api\Client\Client;
 
@@ -41,7 +42,8 @@ class SwedbankPayPaymentMethod
         try {
             return $result[$operation]['transaction']['state'] == 'Completed' || $result[$operation]['transaction']['state'] == 'AwaitingActivity';
         } catch (\Throwable $e) {
-            throw new \Exception("Invalid response for purchase #{$purchase->id}");
+            Log::error($e->getMessage());
+            throw new \Exception("Invalid response for competitor #{$competitor->id}");
         }
     }
 
