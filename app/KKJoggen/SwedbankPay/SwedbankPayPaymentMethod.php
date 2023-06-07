@@ -61,7 +61,7 @@ class SwedbankPayPaymentMethod
 
     public function callback(Competitor $competitor)
     {
-        info(request()->all());
+        info(json_encode(request()->all()));
 
         $result = $this->client->get("{$competitor->getPaymentData('paymentorder')['paymentOrder']['id']}");
         $result = json_decode($result->getResponseBody(), true);
