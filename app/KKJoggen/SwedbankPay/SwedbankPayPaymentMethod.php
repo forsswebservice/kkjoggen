@@ -59,11 +59,17 @@ class SwedbankPayPaymentMethod
         return $this->validResponse('reversal', $competitor, $result);
     }
 
-    public function callback()
+    public function callback(Competitor $competitor)
     {
-        info('Payex callback '.now());
-        info(json_encode(request()->all()));
-        info(request()->getQueryString());
+        info(request()->all());
+
+        $result = $this->client->get("{$competitor->getPaymentData('paymentorder')['paymentOrder']['id']}");
+        $result = json_decode($result->getResponseBody(), true);
+
+        $competitor->setPaymentData('callback', $result);
+        $competitor->save();
+
+        dd($result);
     }
 
     public function payload($additional_data = [])

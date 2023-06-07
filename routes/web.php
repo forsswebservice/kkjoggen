@@ -24,7 +24,7 @@ Route::get('/avbryt/{competitor}', [\App\Http\Controllers\CancelController::clas
 Route::get('betala/swedbank/{competitor}', [\App\Http\Controllers\SwedbankPaymentMethodController::class, 'index'])->name('swedbank.index');
 Route::get('betala/swedbank/{competitor}/complete', [\App\Http\Controllers\SwedbankPaymentMethodController::class, 'complete'])->name('swedbank.complete');
 Route::get('betala/swedbank/{competitor}/cancel', [\App\Http\Controllers\SwedbankPaymentMethodController::class, 'cancel'])->name('swedbank.cancel');
-Route::get('betala/swedbank/{competitor}/callback', [\App\Http\Controllers\SwedbankPaymentMethodController::class, 'callback'])->name('swedbank.callback');
+Route::post('betala/swedbank/{competitor}/callback', [\App\Http\Controllers\SwedbankPaymentMethodController::class, 'callback'])->name('swedbank.callback');
 
 Route::get('/dashboard', function () {
     return view('dashboard');
