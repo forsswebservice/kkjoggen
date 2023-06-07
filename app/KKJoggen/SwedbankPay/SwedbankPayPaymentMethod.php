@@ -42,6 +42,8 @@ class SwedbankPayPaymentMethod
         try {
             return $result[$operation]['transaction']['state'] == 'Completed' || $result[$operation]['transaction']['state'] == 'AwaitingActivity';
         } catch (\Throwable $e) {
+            info($operation);
+            info(json_encode($result));
             Log::error($e->getMessage());
             throw new \Exception("Invalid response for competitor #{$competitor->id}");
         }
