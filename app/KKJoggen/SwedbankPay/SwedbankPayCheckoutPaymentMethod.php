@@ -108,11 +108,16 @@ class SwedbankPayCheckoutPaymentMethod extends SwedbankPayPaymentMethod
             $competitor->setPaymentData('pre-capture', $result);
             $competitor->save();
 
-            $result = $this->client->post($this->stripBaseUrl($this->getOperationByRel($result, 'capture')), $this->capturePayload($competitor));
-            $result = json_decode($result->getResponseBody(), true);
+            if($capture_url = $this->getOperationByRel($result, 'capture')) {
+                $result = $this->client->post($this->stripBaseUrl($capture_url), $this->capturePayload($competitor));
+                $result = json_decode($result->getResponseBody(), true);
 
-            $competitor->setPaymentData('capture', $result);
-            $competitor->save();
+                $competitor->setPaymentData('capture', $result);
+                $competitor->save();
+            } else {
+                info("No capture operation found for reference #{$competitor->id}.");
+                return false;
+            }
 
             return $result;
         } catch (\Throwable $e) {
