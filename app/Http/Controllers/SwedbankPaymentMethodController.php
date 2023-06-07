@@ -91,13 +91,14 @@ class SwedbankPaymentMethodController extends Controller
 
     public function callback(Competitor $competitor)
     {
-        if (! request()->hasValidSignature()) {
+        if (! request()->hasValidSignature() && !app()->isLocal()) {
             abort(401);
         }
 
         try {
             (new SwedbankPayCheckoutPaymentMethod())->callback($competitor);
         } catch (\Throwable $e) {
+            dd($e->getMessage());
             Log::error($e->getMessage());
         }
 

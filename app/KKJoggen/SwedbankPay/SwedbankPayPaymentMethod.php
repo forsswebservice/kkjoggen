@@ -62,12 +62,19 @@ class SwedbankPayPaymentMethod
     public function callback(Competitor $competitor)
     {
         info(json_encode(request()->all()));
+        exit;
+        $competitor->setPaymentData('callback', request()->all());
+        $competitor->save();
 
-        $result = $this->client->get("{$competitor->getPaymentData('paymentorder')['paymentOrder']['id']}");
+        $result = $this->client->get(request()->all()['payment']['id']);
         $result = json_decode($result->getResponseBody(), true);
 
-        $competitor->setPaymentData('callback', $result);
+        $competitor->setPaymentData('callback-transaction', request()->all());
         $competitor->save();
+
+        if($capture_url = $this->getOperationByRel($result, 'capture', true)) {
+            dd($capture_url);
+        }
 
         dd($result);
     }
