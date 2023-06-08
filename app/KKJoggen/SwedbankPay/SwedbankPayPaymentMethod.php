@@ -81,7 +81,13 @@ class SwedbankPayPaymentMethod
         $competitor->save();
 
         if(!$competitor->settled_at) {
-            return $this->complete($competitor);
+            $result = $this->complete($competitor);
+
+            if($competitor->settled_at) {
+                $competitor->sendConfirmations();;
+            }
+
+            return $result;
         }
 
         return true;
