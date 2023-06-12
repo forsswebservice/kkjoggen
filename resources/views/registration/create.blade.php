@@ -157,7 +157,7 @@
                                class="block text-sm font-medium leading-6 text-gray-900">Födelseår<span
                                 class="text-red-500">*</span></label>
                         <div class="mt-2">
-                            <input type="text" name="born{{ $i }}" id="born{{ $i }}" value="{{ old("born{$i}") }}"
+                            <input type="text" name="born{{ $i }}" id="born{{ $i }}" value="{{ old("born{$i}") }}" maxlength="4"
                                    class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-green-600 sm:text-sm sm:leading-6">
                             @error("born{$i}")
                             <p class="text-sm text-red-500">{{ $message }}</p>

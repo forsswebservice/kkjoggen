@@ -87,7 +87,12 @@ class SwedbankPayCheckoutPaymentMethod extends SwedbankPayPaymentMethod
             $competitor->setPaymentData('current-payment-paid', $result);
             $competitor->save();
 
-            if (in_array($paid_result['paid']['instrument'], ['Swish', 'Trustly'])) {
+            $instrument = rescue(fn() => $paid_result['paid']['instrument'], null, false);
+            if(!$instrument) {
+                $instrument = rescue(fn() => $paid_result['paymentOrder']['instrument'], null, false);
+            }
+
+            if (in_array($instrument, ['Swish', 'Trustly'])) {
                 return true;
             }
         } catch (\Throwable $e) {
