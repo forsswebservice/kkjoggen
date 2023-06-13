@@ -185,6 +185,7 @@
                             <select name="competition_class_id{{ $i }}" id="competition_class_id{{ $i }}"
                                     onchange="document.getElementById('is_local{{ $i }}').disabled = ![{{ $free_when_local_classes->map(fn($c) => $c->id)->join(',') }}].includes(parseInt(this.value));"
                                     class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-green-600 sm:text-sm sm:leading-6">
+                                <option value="" disabled {{ old("competition_class_id{$i}") ? '' : 'selected' }}>- Välj löparklass -</option>
                                 @foreach($year->competitionClasses as $competition_class)
                                     <option
                                         value="{{ $competition_class->id }}" {{ $competition_class->id == old("competition_class_id{$i}") ? 'selected' : ''}}>{{ $competition_class->name }}</option>
