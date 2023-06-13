@@ -19,7 +19,7 @@
             </div>
             <div class="mt-6 grid grid-cols-1 gap-x-6 gap-y-2 sm:grid-cols-6">
                 <h2 class="text-xl sm:col-span-6 font-bold bg-green-600 -mx-14 px-14 py-2 text-white border-b-2 border-b-green-800">
-                    Betalare</h2>
+                    Betalare/Anmälare</h2>
                 <div class="sm:col-span-3">
                     <label for="firstname" class="block text-sm font-medium leading-6 text-gray-900">Förnamn<span
                             class="text-red-500">*</span></label>
