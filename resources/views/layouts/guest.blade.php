@@ -27,8 +27,11 @@
             </div>
 
             <div class="w-full sm:max-w-4xl mt-6 px-6 py-4 bg-white shadow-md overflow-hidden sm:rounded-lg my-10">
-
                 {{ $slot }}
+            </div>
+
+            <div class="mb-8 text-gray-500 text-sm">
+                Skapad med ♥ av <a href="https://forss.se/" target="_blank">Forss IT</a>
             </div>
         </div>
     </body>
