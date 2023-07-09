@@ -45,7 +45,7 @@ class SwedbankPayCheckoutPaymentMethod extends SwedbankPayPaymentMethod
                 'firstname' => $competitor->firstname,
                 'lastname' => $competitor->lastname,
                 'email' => $competitor->email,
-                'msisdn' => $this->formatPhoneNumber($competitor->phone),
+                'msisdn' => $this->formatPhoneNumber($this->onlyNumbers($competitor->phone)),
                 'payerReference' => $payerReference,
             ],
         ]));
@@ -56,16 +56,24 @@ class SwedbankPayCheckoutPaymentMethod extends SwedbankPayPaymentMethod
         return $this->getOperationByRel(json_decode($result->getResponseBody(), true), 'redirect-checkout');
     }
 
-    public function formatPhoneNumber($number) {
+    public function formatPhoneNumber($number)
+    {
         if(substr($number, 0, 1) != "+") {
             if(substr($number, 0, 2) == "00") {
                 str_replace("00", "+", $number);
             } else if(substr($number, 0, 1) == "0") {
                 $number = "+46" . substr($number, 1);
+            } else if(substr($number, 0, 2) == 46) {
+                $number = "+{$number}";
             }
         }
 
         return $number;
+    }
+
+    public function onlyNumbers($mixed)
+    {
+        return preg_replace('/[^0-9]/', '', $mixed);
     }
 
     public function complete(Competitor $competitor)
