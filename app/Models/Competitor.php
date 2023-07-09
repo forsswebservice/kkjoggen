@@ -58,7 +58,7 @@ class Competitor extends Model
 
         $total_price = 0;
         $total_rebate = 0;
-        $children_grouped_by_class = $this->children->groupBy('competition_class_id');
+        $children_grouped_by_multiple = $this->children->groupBy(fn($c) => $c->competitionClass->price_multiple ? 'has_price_multiple' : 'only_single');
         $children_count = $this->children->count();
 
         foreach($this->children as $child) {
@@ -66,7 +66,7 @@ class Competitor extends Model
 
             if($child->is_local && $child->competitionClass->is_free_when_local) {
                 $price = 0;
-            } elseif($child->competitionClass->price_multiple > 0 && count($children_grouped_by_class[$child->competitionClass->id]) > 1 && $child->id != $children_grouped_by_class[$child->competitionClass->id][0]->id) {
+            } elseif($child->competitionClass->price_multiple > 0 && count($children_grouped_by_multiple['has_price_multiple']) > 1 && $child->id != $children_grouped_by_multiple['has_price_multiple'][0]->id) {
                 $price = $child->competitionClass->price_multiple;
             } else {
                 $price = $child->competitionClass->price;
